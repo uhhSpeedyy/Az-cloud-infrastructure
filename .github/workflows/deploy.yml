@@ -30,12 +30,13 @@ jobs:
         working-directory: ./app
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
 
-      - name: Check Python syntax
+      - name: Validate application and model tests
         working-directory: ./app
         run: |
           python -m py_compile app.py
+          pytest -q
 
       - name: Login to Azure
         uses: azure/login@v2
@@ -49,4 +50,3 @@ jobs:
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           package: ./app
-          

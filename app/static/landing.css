@@ -1,0 +1,111 @@
+:root {
+  --paper: #f3efe5;
+  --ink: #172027;
+  --muted: #59636b;
+  --navy: #18394a;
+  --rust: #b74b2d;
+  --white: #fffdf8;
+  --serif: "Newsreader", Georgia, serif;
+  --sans: "DM Sans", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.landing {
+  width: min(980px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: clamp(52px, 10vh, 110px) 0;
+}
+
+.landing-header { margin-bottom: 34px; }
+
+.landing-header p {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.landing-header h1 {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(2.8rem, 7vw, 5rem);
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  line-height: 1;
+}
+
+.model-choices {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.model-choice {
+  display: grid;
+  min-height: 260px;
+  grid-template-columns: 1fr auto;
+  align-content: end;
+  gap: 10px 24px;
+  padding: clamp(26px, 5vw, 46px);
+  border: 1px solid var(--ink);
+  color: var(--ink);
+  background: var(--white);
+  text-decoration: none;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.model-choice--afl { border-top: 7px solid var(--navy); }
+.model-choice--books { border-top: 7px solid var(--rust); }
+
+.model-choice:hover {
+  box-shadow: 8px 8px 0 rgba(23, 32, 39, 0.14);
+  transform: translate(-3px, -3px);
+}
+
+.model-choice:focus-visible {
+  outline: 4px solid var(--rust);
+  outline-offset: 5px;
+}
+
+.choice-name {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.choice-description {
+  grid-column: 1;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.choice-arrow {
+  grid-row: 1 / 3;
+  grid-column: 2;
+  align-self: center;
+  font-size: 1.6rem;
+}
+
+@media (max-width: 700px) {
+  .landing { width: min(100% - 32px, 980px); }
+  .model-choices { grid-template-columns: 1fr; }
+  .model-choice { min-height: 190px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .model-choice { transition: none; }
+}

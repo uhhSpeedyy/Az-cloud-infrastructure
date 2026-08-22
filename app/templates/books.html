@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Add books you like and get personalised book recommendations.">
+    <meta name="theme-color" content="#f4f0e7">
+    <title>Book Recommender — Sam Speed</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='books.css') }}">
+    <script src="{{ url_for('static', filename='books.js') }}" defer></script>
+</head>
+<body>
+    <a class="skip-link" href="#recommender">Skip to book search</a>
+
+    <div class="books-shell">
+        <header class="books-header">
+            <a class="back-link" href="/">
+                <span aria-hidden="true">←</span>
+                <span>Home</span>
+            </a>
+            <a class="books-wordmark" href="/books" aria-label="Book Recommender home">
+                <span>Book Recommender</span>
+            </a>
+        </header>
+
+        <main id="recommender">
+            <form class="recommendation-form" id="recommendation-form" novalidate>
+                <section class="builder-section" aria-labelledby="shelf-title">
+                    <div class="section-content">
+                        <div class="section-title-row">
+                            <h1 id="shelf-title">Add books you like</h1>
+                            <p class="selection-count" id="selection-count"><strong>0</strong> / 10 selected</p>
+                        </div>
+
+                        <div class="search-wrap">
+                            <label for="book-search">Book title or author</label>
+                            <div class="search-controls">
+                                <div class="search-input-wrap">
+                                    <span class="search-icon" aria-hidden="true"></span>
+                                    <input
+                                        id="book-search"
+                                        name="book-search"
+                                        type="search"
+                                        role="combobox"
+                                        aria-autocomplete="list"
+                                        aria-expanded="false"
+                                        aria-controls="book-suggestions"
+                                        autocomplete="off"
+                                        maxlength="120"
+                                        spellcheck="false"
+                                        placeholder="Search books"
+                                    >
+                                    <span class="search-progress" id="search-progress" aria-hidden="true"></span>
+                                    <div class="suggestions" id="book-suggestions" role="listbox" aria-label="Book suggestions" hidden></div>
+                                </div>
+                                <button class="recommend-button" id="recommend-button" type="submit" disabled>
+                                    <span>Recommend books</span>
+                                    <span aria-hidden="true">→</span>
+                                </button>
+                            </div>
+                            <p class="search-hint">Select a result to add it.</p>
+                            <p class="search-status" id="search-status" role="status" aria-live="polite"></p>
+                        </div>
+
+                        <div class="selected-heading">
+                            <h2>Selected books</h2>
+                            <button class="clear-button" id="clear-favourites" type="button" hidden>Clear</button>
+                        </div>
+                        <div class="favourites-grid" id="favourites-grid" aria-live="polite">
+                            <div class="empty-shelf" id="empty-shelf">
+                                <p>No books selected.</p>
+                            </div>
+                        </div>
+
+                        <details class="preferences-panel">
+                            <summary>Options</summary>
+                            <div class="preference-grid">
+                                <fieldset>
+                                    <legend>Era</legend>
+                                    <div class="segmented-options">
+                                        <label><input type="radio" name="era" value="balanced" checked><span>Balanced</span></label>
+                                        <label><input type="radio" name="era" value="modern"><span>Modern</span></label>
+                                        <label><input type="radio" name="era" value="classics"><span>Classics</span></label>
+                                    </div>
+                                </fieldset>
+
+                                <fieldset>
+                                    <legend>Length</legend>
+                                    <div class="segmented-options">
+                                        <label><input type="radio" name="length" value="similar" checked><span>Similar</span></label>
+                                        <label><input type="radio" name="length" value="any"><span>Any</span></label>
+                                    </div>
+                                </fieldset>
+
+                                <fieldset>
+                                    <legend>Discovery</legend>
+                                    <div class="segmented-options">
+                                        <label><input type="radio" name="discovery" value="balanced" checked><span>Balanced</span></label>
+                                        <label><input type="radio" name="discovery" value="familiar"><span>Familiar</span></label>
+                                        <label><input type="radio" name="discovery" value="adventurous"><span>Adventurous</span></label>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </details>
+                    </div>
+                </section>
+            </form>
+
+            <section class="loading-panel" id="loading-panel" role="status" aria-live="polite" aria-atomic="true" aria-labelledby="loading-title" hidden>
+                <div class="loading-orbit" aria-hidden="true"><span></span></div>
+                <div>
+                    <h2 id="loading-title">Finding recommendations…</h2>
+                </div>
+            </section>
+
+            <section class="error-panel" id="error-panel" role="alert" hidden>
+                <h2>Couldn’t load recommendations.</h2>
+                <p id="error-message">Please try again.</p>
+                <button id="retry-button" type="button">Try again</button>
+            </section>
+
+            <section class="results" id="results" aria-labelledby="results-title" tabindex="-1" hidden>
+                <header class="results-header">
+                    <h2 id="results-title">Recommendations</h2>
+                    <p class="profile-summary" id="profile-summary"></p>
+                    <div class="profile-signals">
+                        <div id="profile-themes-wrap" hidden>
+                            <span>Themes</span>
+                            <div class="signal-list" id="profile-themes"></div>
+                        </div>
+                        <div id="profile-styles-wrap" hidden>
+                            <span>Style</span>
+                            <div class="signal-list" id="profile-styles"></div>
+                        </div>
+                    </div>
+                </header>
+
+                <div class="result-lists" id="result-lists"></div>
+
+                <footer class="results-note">
+                    <span aria-hidden="true">i</span>
+                    <p>Suggestions depend on the book data available.</p>
+                </footer>
+            </section>
+        </main>
+
+        <footer class="books-footer">
+            <a href="/">Sam Speed</a>
+            <p>Data from <a href="https://openlibrary.org/" rel="noreferrer">Open Library</a>.</p>
+        </footer>
+    </div>
+
+    <noscript>
+        <div class="noscript-message">JavaScript is required to get recommendations.</div>
+    </noscript>
+</body>
+</html>

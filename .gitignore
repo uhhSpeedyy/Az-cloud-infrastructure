@@ -12,3 +12,10 @@ __pycache__/
 *.pyc
 **/.azure/
 app/app.zip
+app/data/raw/
+app/data/processed/
+app/artifacts/*.tmp
+.pytest_cache/
+.ruff_cache/
+htmlcov/
+.coverage

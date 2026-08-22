@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Choose between an AFL prediction model and a book recommender.">
+    <meta name="theme-color" content="#f3efe5">
+    <title>Sam Speed</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='landing.css') }}">
+</head>
+<body>
+    <main class="landing" id="models">
+        <header class="landing-header">
+            <p>Sam Speed</p>
+            <h1>Choose a model</h1>
+        </header>
+
+        <nav class="model-choices" aria-label="Models">
+            <a class="model-choice model-choice--afl" href="/afl">
+                <span class="choice-name">AFL Prediction Model</span>
+                <span class="choice-description">View match predictions</span>
+                <span class="choice-arrow" aria-hidden="true">→</span>
+            </a>
+
+            <a class="model-choice model-choice--books" href="/books">
+                <span class="choice-name">Book Recommender</span>
+                <span class="choice-description">Find books based on your favourites</span>
+                <span class="choice-arrow" aria-hidden="true">→</span>
+            </a>
+        </nav>
+    </main>
+</body>
+</html>
